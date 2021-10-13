@@ -24,5 +24,4 @@ public interface MarbleSolitaireModel extends MarbleSolitaireModelState {
    * @return true if the game is over, false otherwise.
    */
   boolean isGameOver();
-
 }

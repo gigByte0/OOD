@@ -1,5 +1,14 @@
 package cs3500.marblesolitaire.model.hw02;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import cs3500.marblesolitaire.controller.MarbleSolitaireController;
+import cs3500.marblesolitaire.controller.MarbleSolitaireControllerImpl;
+import cs3500.marblesolitaire.view.MarbleSolitaireTextView;
+import cs3500.marblesolitaire.view.MarbleSolitaireView;
+
 /**
  * Class to represent a game object, where each instantiation creates a new game.
  * sRow field represents row of empty slot on board.
@@ -112,7 +121,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
    * @param armThickness represent the arm thickness of board.
    * @return boolean value, returns true if slot is invalid and false if it is valid slot position.
    */
-  private static boolean isInitInvalidSlot(int row, int column, int armThickness) {
+  public static boolean isInitInvalidSlot(int row, int column, int armThickness) {
     return (((row <= (armThickness - 2)) && (column <= (armThickness - 2))) ||
             ((row >= (2 * armThickness - 1)) && (column <= (armThickness - 2))) ||
             ((row <= (armThickness - 2)) && (column >= (2 * armThickness - 1))) ||
@@ -152,7 +161,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
    * @param toCol   column of to position.
    * @return boolean, return true if the move is valid and false if not.
    */
-  private boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol) {
+  public boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol) {
     return (((getSlotAt(fromRow, fromCol) == SlotState.Marble)
             && (getSlotAt(toRow, toCol) == SlotState.Empty))
             && ((this.board[(fromRow + toRow) / 2][fromCol] == SlotState.Marble)
@@ -354,5 +363,16 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
       }
     }
     return score;
+  }
+  public static void main(String[] args) {
+    EnglishSolitaireModel model = new EnglishSolitaireModel();
+    MarbleSolitaireView view = new MarbleSolitaireTextView(model);
+    Readable in = new BufferedReader(new InputStreamReader(System.in));
+    MarbleSolitaireController controller = new MarbleSolitaireControllerImpl(model, view, in);
+    try {
+      controller.playGame();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
